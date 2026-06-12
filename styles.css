@@ -167,8 +167,36 @@ a { color: inherit; text-decoration: none; }
 /* ════ RACING ════ */
 .racing { position: relative; padding: 8rem 0; overflow: hidden; }
 .racing-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-.racing-bg img { position: absolute; inset: -8% 0; width: 100%; height: 116%; object-fit: cover; opacity: .3; will-change: transform; }
+.racing-bg img { position: absolute; inset: -8% 0; width: 100%; height: 116%; object-fit: cover; opacity: .5; filter: grayscale(.92) brightness(.5); scale: 1.04; will-change: transform, filter, scale; }
+.racing.revved .racing-bg img { animation: revIn 2.7s var(--ease) forwards; }
+@keyframes revIn {
+  0%   { scale: 1.04; opacity: .5;  filter: grayscale(.92) brightness(.5); }
+  32%  { scale: 1.26; opacity: .95; filter: grayscale(0) brightness(1.25) saturate(1.3); }
+  100% { scale: 1.1;  opacity: .58; filter: grayscale(0) brightness(.95) saturate(1.12); }
+}
 .racing-veil { position: absolute; inset: 0; background: linear-gradient(180deg, var(--bg) 0%, rgba(4,4,5,.62) 38%, rgba(4,4,5,.62) 62%, var(--bg) 100%); }
+.speed-streak { position: absolute; inset: 0; overflow: hidden; opacity: 0; pointer-events: none; z-index: 2; }
+.speed-streak::before { content: ''; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 45%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), rgba(255,158,27,.18), transparent); transform: skewX(-18deg); }
+.racing.revved .speed-streak { animation: streakShow 1.2s ease forwards; }
+.racing.revved .speed-streak::before { animation: streakSweep 1.05s cubic-bezier(.5,0,.2,1) .12s forwards; }
+@keyframes streakShow { 0%{opacity:0} 18%{opacity:1} 100%{opacity:0} }
+@keyframes streakSweep { from { left: -60%; } to { left: 135%; } }
+
+/* botón ACELERAR */
+.rev-stage { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: .5rem 0 3rem; transition: opacity .55s var(--ease), transform .55s var(--ease); }
+.racing.revved .rev-stage { opacity: 0; transform: scale(1.14); pointer-events: none; }
+.rev-btn { position: relative; width: 138px; height: 138px; border-radius: 50%; border: none; cursor: pointer; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .06em; color: #1a1205; background: radial-gradient(circle at 50% 38%, #FFC76B, var(--cit) 58%, #b86c00); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .25rem; animation: revPulse 1.9s var(--ease) infinite; transition: transform .2s var(--ease); }
+.rev-btn:hover { transform: scale(1.06); }
+.rev-btn:active { transform: scale(.97); }
+.rev-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.rev-btn svg { width: 32px; height: 32px; }
+@keyframes revPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,158,27,.55), 0 14px 34px rgba(255,158,27,.45); }
+  70%  { box-shadow: 0 0 0 28px rgba(255,158,27,0), 0 14px 34px rgba(255,158,27,.45); }
+  100% { box-shadow: 0 0 0 0 rgba(255,158,27,0), 0 14px 34px rgba(255,158,27,.45); }
+}
+.rev-hint { font-size: .76rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.rev-hint::after { content: ' ▾'; color: var(--cit); }
 .racing-inner { position: relative; z-index: 2; }
 .racing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-bottom: 3rem; }
 .racing-card { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); }

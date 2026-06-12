@@ -157,6 +157,54 @@
   if (document.readyState === 'complete') initMotion();
   else window.addEventListener('load', initMotion, { once: true });
 
+  /* ── 6b. Racing ACELERAR: el clic desbloquea el audio y revela el auto ── */
+  (() => {
+    const racing = $('.racing'), revBtn = $('#revBtn'), revStage = $('#revStage');
+    if (!racing || !revBtn) return;
+    let revved = false, audioCtx;
+    const makeDist = (a) => { const n = 256, c = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / n * 2 - 1; c[i] = (Math.PI + a) * x / (Math.PI + a * Math.abs(x)); } return c; };
+    const makeNoise = (ctx, d) => { const len = (ctx.sampleRate * d) | 0, b = ctx.createBuffer(1, len, ctx.sampleRate), ch = b.getChannelData(0); for (let i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1; return b; };
+    function playEngine() {
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        audioCtx = audioCtx || new AC();
+        const ctx = audioCtx; if (ctx.state === 'suspended') ctx.resume();
+        const now = ctx.currentTime, dur = 2.7;
+        const master = ctx.createGain(); master.connect(ctx.destination);
+        master.gain.setValueAtTime(0.0001, now);
+        master.gain.linearRampToValueAtTime(0.5, now + 0.5);
+        master.gain.setValueAtTime(0.5, now + 1.4);
+        master.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
+        lp.frequency.setValueAtTime(420, now);
+        lp.frequency.linearRampToValueAtTime(3600, now + 0.7);
+        lp.frequency.linearRampToValueAtTime(700, now + dur);
+        lp.connect(master);
+        const shaper = ctx.createWaveShaper(); shaper.curve = makeDist(38); shaper.oversample = '2x'; shaper.connect(lp);
+        [60, 90, 120].forEach((base, i) => {
+          const o = ctx.createOscillator(); o.type = i === 0 ? 'sawtooth' : 'square';
+          const g = ctx.createGain(); g.gain.value = i === 0 ? 0.6 : 0.16;
+          o.frequency.setValueAtTime(base, now);
+          o.frequency.exponentialRampToValueAtTime(base * 3.4, now + 0.55);
+          o.frequency.exponentialRampToValueAtTime(base * 1.4, now + dur);
+          o.connect(g); g.connect(shaper); o.start(now); o.stop(now + dur + 0.05);
+        });
+        const noise = ctx.createBufferSource(); noise.buffer = makeNoise(ctx, dur);
+        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 0.7;
+        const ng = ctx.createGain(); ng.gain.setValueAtTime(0.0001, now);
+        ng.gain.linearRampToValueAtTime(0.22, now + 0.6); ng.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        noise.connect(bp); bp.connect(ng); ng.connect(master); noise.start(now); noise.stop(now + dur + 0.05);
+      } catch (e) { /* audio no disponible: la animación visual sigue */ }
+    }
+    const doRev = () => {
+      if (revved) return; revved = true;
+      racing.classList.add('revved');
+      playEngine();
+      setTimeout(() => { if (revStage) revStage.style.display = 'none'; }, 700);
+    };
+    revBtn.addEventListener('click', doRev);
+  })();
+
   /* ── 7. Flavor switcher ── */
   const tabs = $$('.flavor-tab'), panels = $$('.flavor-panel');
   tabs.forEach((tab) => tab.addEventListener('click', () => {
