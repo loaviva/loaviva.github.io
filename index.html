@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>document.documentElement.classList.add('js')</script>
+<title>Loa Viva — Despierta el agua | Energía funcional · 0 azúcar · 0 cafeína</title>
+<meta name="description" content="Loa Viva: la bebida funcional que convierte cualquier agua en energía limpia. 0 azúcar, 0 cafeína, electrolitos y vitaminas. Del pit lane a tu rutina — en cada bodega del Perú." />
+<meta name="theme-color" content="#040405" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z' fill='%23FF9E1B'/%3E%3Cpath d='M17 9l-6 9h4l-1 6 6-9h-4z' fill='%23050506'/%3E%3C/svg%3E" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Loa Viva — Despierta el agua" />
+<meta property="og:description" content="Energía funcional sin azúcar y sin cafeína. Del pit lane a tu rutina." />
+<meta property="og:image" content="assets/loa-trio-bottles.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="image" href="assets/loa-runner-night.jpg" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" /></noscript>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ░░ PRELOADER ░░ -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pre-inner">
+    <svg class="pre-mark" viewBox="0 0 32 32"><path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z" fill="#FF9E1B"/><path d="M17 9l-6 9h4l-1 6 6-9h-4z" fill="#040405"/></svg>
+    <div class="pre-word">LOA<span>VIVA</span></div>
+    <div class="pre-bar"><span id="preBar"></span></div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ░░ TOPBAR ░░ -->
+<div class="topbar">
+  <div class="topbar-track">
+    <span>ENVÍO GRATIS EN LIMA DESDE S/49 <i>✦</i> SUSCRÍBETE Y AHORRA 15% <i>✦</i> NUEVO: LOA ACTIVA TROPICAL <i>✦</i> 0 AZÚCAR · 0 CAFEÍNA <i>✦</i> </span>
+    <span aria-hidden="true">ENVÍO GRATIS EN LIMA DESDE S/49 <i>✦</i> SUSCRÍBETE Y AHORRA 15% <i>✦</i> NUEVO: LOA ACTIVA TROPICAL <i>✦</i> 0 AZÚCAR · 0 CAFEÍNA <i>✦</i> </span>
+  </div>
+</div>
+
+<!-- ░░ NAV ░░ -->
+<header class="nav" id="nav">
+  <a href="#inicio" class="brand" aria-label="Loa Viva — inicio">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z"/><path d="M17 9l-6 9h4l-1 6 6-9h-4z" class="brand-bolt"/></svg>
+    <span class="brand-name">LOA<i>VIVA</i></span>
+  </a>
+  <nav class="nav-links" aria-label="Principal">
+    <a href="#producto">Producto</a>
+    <a href="#racing">Racing</a>
+    <a href="#sabores">Sabores</a>
+    <a href="#tienda">Tienda</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#aliados">Aliados</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cart-btn" id="cartBtn" aria-label="Abrir carrito">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <a href="#tienda" class="btn-cta-nav magnetic">Comprar</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#producto">Producto</a>
+  <a href="#racing">Racing</a>
+  <a href="#sabores">Sabores</a>
+  <a href="#tienda">Tienda</a>
+  <a href="#testimonios">Testimonios</a>
+  <a href="#aliados">Aliados</a>
+  <a href="#tienda" class="mm-cta">Comprar</a>
+</div>
+
+<!-- ░░ HERO ░░ -->
+<main id="inicio">
+<section class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <img class="hero-photo" id="heroPhoto" src="assets/loa-runner-night.jpg" alt="" fetchpriority="high" />
+    <div class="hero-veil"></div>
+  </div>
+  <canvas class="hero-canvas" id="fxCanvas" aria-hidden="true"></canvas>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-kicker" data-hero="0"><span class="dot"></span> Energía funcional · 0 azúcar · 0 cafeína</div>
+      <h1 class="hero-title" aria-label="Despierta el agua">
+        <span class="line" data-hero="1"><span class="line-in">DESPIERTA</span></span>
+        <span class="line" data-hero="2"><span class="line-in">EL <em>AGUA</em></span></span>
+      </h1>
+      <p class="hero-sub" data-hero="3">
+        La pastilla efervescente que convierte cualquier vaso en energía limpia.
+        Del pit lane a tu rutina — sabor, electrolitos y vitaminas al precio de una gaseosa.
+      </p>
+      <div class="hero-actions" data-hero="4">
+        <a href="#tienda" class="btn btn-primary magnetic">Comprar ahora
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#racing" class="btn btn-ghost magnetic">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          Siente la velocidad
+        </a>
+      </div>
+      <div class="hero-badges" data-hero="5">
+        <span class="hbadge">0 AZÚCAR</span><span class="hbadge">0 CAFEÍNA</span><span class="hbadge">+ ELECTROLITOS</span><span class="hbadge">+ VITAMINAS</span>
+      </div>
+    </div>
+
+    <figure class="hero-bottle" data-hero="3">
+      <img src="assets/loa-hero-hidrata.jpg" alt="Botella Loa Viva Hidrata con splash de agua" loading="eager" />
+      <figcaption class="hero-bottle-glow" aria-hidden="true"></figcaption>
+    </figure>
+  </div>
+
+  <a href="#manifiesto" class="hero-scroll" aria-label="Desplázate"><span>SCROLL</span><span class="hero-scroll-line"></span></a>
+</section>
+</main>
+
+<!-- ░░ MARQUEE ░░ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>DESPIERTA EL AGUA <i>◆</i> VELOCIDAD <i>◆</i> ENERGÍA LIMPIA <i>◆</i> SIN AZÚCAR <i>◆</i> SIN CAFEÍNA <i>◆</i> HIDRATA · ACTIVA · DEFENSAS <i>◆</i> EN CADA BODEGA <i>◆</i> </span>
+    <span>DESPIERTA EL AGUA <i>◆</i> VELOCIDAD <i>◆</i> ENERGÍA LIMPIA <i>◆</i> SIN AZÚCAR <i>◆</i> SIN CAFEÍNA <i>◆</i> HIDRATA · ACTIVA · DEFENSAS <i>◆</i> EN CADA BODEGA <i>◆</i> </span>
+  </div>
+</div>
+
+<!-- ░░ MANIFIESTO (scrollytelling statement) ░░ -->
+<section class="manifesto" id="manifiesto">
+  <div class="container">
+    <p class="manifesto-text" id="manifestoText">
+      No es una bebida más en la góndola. Es la energía que no pide permiso:
+      sin azúcar, sin cafeína, sin excusas. Una pastilla, cualquier vaso,
+      y tu agua despierta. <em>Esto es Loa Viva.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ░░ PRODUCTO ░░ -->
+<section class="section" id="producto">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-cit">01 — El producto</span>
+      <h2 class="section-title">Una pastilla.<br>Cualquier vaso. <span class="hl-cit">Tu bebida.</span></h2>
+      <p class="section-lead">La echas en agua, se disuelve sola en segundos y listo. Sin botella especial, sin equipo, sin fricción. Funciona perfecto sola — y mejor aún con la capa de IA.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" data-delay="0"><div class="step-index" style="--c:var(--cit)">01</div><div class="step-body"><h3>Compras</h3><p>El blister en bodega, súper o delivery. Precio de gaseosa.</p></div><span class="step-emoji">🛒</span></div>
+      <div class="step reveal" data-delay="1"><div class="step-index" style="--c:var(--trop)">02</div><div class="step-body"><h3>Disuelves</h3><p>Una pastilla en tu agua. Lista en segundos. Sin botella especial.</p></div><span class="step-emoji">💧</span></div>
+      <div class="step reveal" data-delay="2"><div class="step-index" style="--c:var(--aqua)">03</div><div class="step-body"><h3>Escaneas</h3><p>El QR opcional. La IA aprende tu gusto y tu ritmo.</p></div><span class="step-emoji">📲</span></div>
+      <div class="step reveal" data-delay="3"><div class="step-index" style="--c:var(--berry)">04</div><div class="step-body"><h3>Te suscribes</h3><p>Combinaciones sugeridas y reorder automático con descuento.</p></div><span class="step-emoji">🔁</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ RACING ░░ -->
+<section class="racing" id="racing">
+  <div class="racing-bg" aria-hidden="true">
+    <img id="racingBg" src="assets/loa-race-car.jpg" alt="" loading="lazy" />
+    <div class="racing-veil"></div>
+  </div>
+  <div class="container racing-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-cit">02 — Loa Viva Racing</span>
+      <h2 class="section-title">Nacida para el<br><span class="hl-cit">carril rápido.</span></h2>
+      <p class="section-lead">Nuestro equipo corre de noche y se hidrata limpio. Cero cafeína, cero azúcar — la velocidad la pones tú. <em>Equipo y pilotos conceptuales (demo).</em></p>
+    </div>
+
+    <div class="racing-grid">
+      <article class="racing-card racing-wide reveal" data-delay="0">
+        <img src="assets/loa-race-car.jpg" alt="Monoplaza Loa Viva Racing en circuito urbano nocturno" loading="lazy" />
+        <div class="racing-cap">
+          <span class="racing-tag">El monoplaza</span>
+          <h3>LV-26 "Cascada"</h3>
+          <p>Livery negro mate y naranja. Construido para circuitos urbanos nocturnos — como tu semana.</p>
+        </div>
+      </article>
+      <article class="racing-card reveal" data-delay="1">
+        <img src="assets/loa-f1-pilot.jpg" alt="Piloto del equipo Loa Viva Racing" loading="lazy" />
+        <div class="racing-cap">
+          <span class="racing-tag">Piloto Nº1</span>
+          <h3>Thiago Vargas</h3>
+          <p>22 años · Lima. "La energía no se toma. Se entrena. Loa Viva solo la hidrata."</p>
+        </div>
+      </article>
+      <article class="racing-card reveal" data-delay="2">
+        <img src="assets/loa-bmx-sunset.jpg" alt="Atleta BMX del equipo Loa Viva" loading="lazy" />
+        <div class="racing-cap">
+          <span class="racing-tag">Equipo Air</span>
+          <h3>Maya Quispe · BMX</h3>
+          <p>Campeona latinoamericana de park. Vuela al atardecer, se hidrata sin azúcar.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="racing-stats reveal">
+      <div><b data-count="320" data-suffix=" km/h">0</b><span>de actitud (la pastilla pone el resto)</span></div>
+      <div><b data-count="0" data-suffix="mg">0</b><span>de cafeína en todo el paddock</span></div>
+      <div><b data-count="3" data-suffix=" seg">0</b><span>de pit stop: lo que tarda en disolverse</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ BENEFICIOS ░░ -->
+<section class="section section-dark" id="energia">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-trop">03 — Por qué Loa Viva</span>
+      <h2 class="section-title">Funcional de verdad.<br><span class="hl-trop">Aburrido jamás.</span></h2>
+      <p class="section-lead">Cada beneficio es real y está en la etiqueta. Nada de promesas mágicas — solo agua que sabe rico y suma.</p>
+    </div>
+    <div class="benefit-grid">
+      <article class="benefit-card reveal" data-delay="0"><div class="benefit-ic" style="--c:var(--aqua)">💧</div><h3>Hidratación</h3><p>Sales minerales y electrolitos que reponen lo que el día te quita.</p></article>
+      <article class="benefit-card reveal" data-delay="1"><div class="benefit-ic" style="--c:var(--cit)">⚡</div><h3>Vitalidad</h3><p>Magnesio y complejo B en Loa Activa, sin cafeína ni azúcar añadida.</p></article>
+      <article class="benefit-card reveal" data-delay="2"><div class="benefit-ic" style="--c:var(--berry)">🛡️</div><h3>Con Vitamina C + Zinc</h3><p>Loa Defensas suma vitamina C y zinc. Sabor berries, apto familia.</p></article>
+      <article class="benefit-card reveal" data-delay="3"><div class="benefit-ic" style="--c:var(--trop)">🍃</div><h3>0 azúcar añadida</h3><p>El sabor viene del perfil, no del azúcar. Ligero, limpio, sin culpa.</p></article>
+      <article class="benefit-card reveal" data-delay="4"><div class="benefit-ic" style="--c:var(--cit)">🎒</div><h3>Te cabe en el bolsillo</h3><p>Formato pastilla. Llévalo a la oficina, al gym o al cole.</p></article>
+      <article class="benefit-card reveal" data-delay="5"><div class="benefit-ic" style="--c:var(--aqua)">🏪</div><h3>En cada bodega</h3><p>Mismo canal que la gaseosa, mismo precio. Accesible día uno.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ SABORES ░░ -->
+<section class="section flavors-section" id="sabores">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-cit">04 — La línea</span>
+      <h2 class="section-title">Tres sabores.<br>Un beneficio <span class="hl-cit">claro</span> para cada quien.</h2>
+      <p class="section-lead">No 15 sabores sin criterio — 3 propuestas con identidad propia. Elige y mira la web cambiar contigo.</p>
+    </div>
+    <div class="flavor-tabs reveal">
+      <button class="flavor-tab is-active" data-flavor="hidrata" style="--c:var(--aqua)">Hidrata</button>
+      <button class="flavor-tab" data-flavor="activa" style="--c:var(--cit)">Activa</button>
+      <button class="flavor-tab" data-flavor="defensas" style="--c:var(--trop)">Defensas</button>
+    </div>
+    <div class="flavor-stage reveal" id="flavorStage">
+      <div class="flavor-panel is-active" data-flavor="hidrata" style="--c:var(--aqua)">
+        <div class="flavor-visual"><div class="flavor-photo" style="background-position: 1% 50%"></div></div>
+        <div class="flavor-info">
+          <span class="flavor-tag">Para todos · el día a día</span>
+          <h3 class="flavor-name">Loa Hidrata</h3>
+          <p class="flavor-desc">Sales minerales, electrolitos y un cítrico suave que no cansa. La base de tu hidratación diaria — del escritorio a la calle.</p>
+          <ul class="flavor-benefits"><li>Sales minerales + electrolitos</li><li>Sin azúcar añadida</li><li>Sabor cítrico suave</li></ul>
+          <button class="btn btn-primary magnetic add-from-flavor" data-id="hidrata">Agregar al carrito · S/1.90</button>
+        </div>
+      </div>
+      <div class="flavor-panel" data-flavor="activa" style="--c:var(--cit)">
+        <div class="flavor-visual"><div class="flavor-photo" style="background-position: 50% 50%"></div></div>
+        <div class="flavor-info">
+          <span class="flavor-tag">Para activos · antes y después</span>
+          <h3 class="flavor-name">Loa Activa</h3>
+          <p class="flavor-desc">Magnesio y complejo B con golpe tropical. Para el antes y el después del entrenamiento. Cero cafeína, cero azúcar — pura actitud.</p>
+          <ul class="flavor-benefits"><li>Magnesio + Vitamina B</li><li>Sin cafeína</li><li>Sabor tropical</li></ul>
+          <button class="btn btn-primary magnetic add-from-flavor" data-id="activa">Agregar al carrito · S/1.90</button>
+        </div>
+      </div>
+      <div class="flavor-panel" data-flavor="defensas" style="--c:var(--trop)">
+        <div class="flavor-visual"><div class="flavor-photo" style="background-position: 99% 50%"></div></div>
+        <div class="flavor-info">
+          <span class="flavor-tag">Para la familia · apto para niños</span>
+          <h3 class="flavor-name">Loa Defensas</h3>
+          <p class="flavor-desc">Vitamina C y zinc con sabor berries que encanta a los chicos. La forma rica de que toda la casa tome más agua. Sin azúcar añadida.</p>
+          <ul class="flavor-benefits"><li>Vitamina C + Zinc</li><li>Sabor berries</li><li>Apto para niños</li></ul>
+          <button class="btn btn-primary magnetic add-from-flavor" data-id="defensas">Agregar al carrito · S/1.90</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ STATS ░░ -->
+<section class="stats-band">
+  <div class="container stats-inner">
+    <div class="stat reveal" data-delay="0"><div class="stat-num" data-count="3" data-suffix="">0</div><p>variedades con identidad propia</p></div>
+    <div class="stat reveal" data-delay="1"><div class="stat-num" data-count="0" data-suffix="g">0</div><p>azúcar añadida y cero cafeína</p></div>
+    <div class="stat reveal" data-delay="2"><div class="stat-num" data-count="3" data-suffix=" seg">0</div><p>y la pastilla se disuelve sola</p></div>
+    <div class="stat reveal" data-delay="3"><div class="stat-num" data-count="100" data-suffix="%">0</div><p>pensada para el canal bodega</p></div>
+  </div>
+</section>
+
+<!-- ░░ TIENDA ░░ -->
+<section class="section" id="tienda">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-trop">05 — Tienda</span>
+      <h2 class="section-title">Llévate tu <span class="hl-trop">energía</span>.</h2>
+      <p class="section-lead">Elige tus sabores, arma tu pack y recíbelo en casa. Envío gratis en Lima desde S/49 · suscríbete y ahorra 15%.</p>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+    <p class="demo-flag" style="margin-top:1.5rem">Tienda demo — precios y checkout de demostración, para reemplazar por tu pasarela real.</p>
+  </div>
+</section>
+
+<!-- ░░ TESTIMONIOS ░░ -->
+<section class="section section-dark" id="testimonios">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-berry">06 — La gente lo dice</span>
+      <h2 class="section-title">Miles ya <span class="hl-berry">despertaron</span> su agua.</h2>
+      <p class="section-lead">Lo que dicen quienes ya cambiaron la gaseosa por Loa Viva. <em>Testimonios ilustrativos (demo).</em></p>
+    </div>
+  </div>
+  <div class="tmarquee"><div class="tmarquee-track" id="tmTrack"></div></div>
+</section>
+
+<!-- ░░ ALIADOS ░░ -->
+<section class="section" id="aliados">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-aqua">07 — Aliados comerciales</span>
+      <h2 class="section-title">Marcas que ya <span class="hl-aqua">se mueven</span> con Loa Viva.</h2>
+      <p class="section-lead">Gimnasios, retail, delivery y universidades que confían en la marca. <em>Aliados y testimonios ilustrativos (demo).</em></p>
+    </div>
+    <div class="logos-row reveal">
+      <span class="logo-chip">FITZONE</span><span class="logo-chip">BODEGAYA</span><span class="logo-chip">VELORUN</span><span class="logo-chip">MINIMAX</span><span class="logo-chip">U·ANDINA</span><span class="logo-chip">RAPTURE</span>
+    </div>
+    <div class="partner-grid">
+      <article class="partner-card reveal" data-delay="0">
+        <div class="partner-head"><div class="partner-logo" style="--c:var(--cit)">FZ</div><div><strong>FitZone</strong><span>Cadena de gimnasios · 18 sedes</span></div></div>
+        <blockquote>"Reemplazamos las bebidas azucaradas de nuestras máquinas por Loa Viva. Rota más rápido y encaja con lo que pide el socio fitness."</blockquote>
+        <div class="partner-by"><span class="partner-avatar">RM</span><div><strong>Ricardo Mendoza</strong><span>Gerente comercial, FitZone</span></div></div>
+      </article>
+      <article class="partner-card reveal" data-delay="1">
+        <div class="partner-head"><div class="partner-logo" style="--c:var(--aqua)">VR</div><div><strong>VeloRun</strong><span>Comunidad running · 6 ciudades</span></div></div>
+        <blockquote>"Es nuestra hidratación oficial en cada carrera. Práctica de transportar y a los corredores les encanta que no tenga azúcar."</blockquote>
+        <div class="partner-by"><span class="partner-avatar">PA</span><div><strong>Paola Antúnez</strong><span>Directora, VeloRun</span></div></div>
+      </article>
+      <article class="partner-card reveal" data-delay="2">
+        <div class="partner-head"><div class="partner-logo" style="--c:var(--trop)">MX</div><div><strong>MiniMax</strong><span>Minimarkets · 240 tiendas</span></div></div>
+        <blockquote>"Margen sano y recompra altísima. El formato pastilla nos ahorra espacio en góndola frente a las botellas."</blockquote>
+        <div class="partner-by"><span class="partner-avatar">JC</span><div><strong>Jorge Castillo</strong><span>Head de compras, MiniMax</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ DISTRIBUCIÓN ░░ -->
+<section class="section section-dark" id="distribucion">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow eyebrow-cit">08 — Distribución</span>
+      <h2 class="section-title">¿Tienes un negocio?<br>Vende <span class="hl-cit">Loa Viva</span>.</h2>
+      <p class="section-lead"><strong>Esto es para empresas</strong> — si eres consumidor, pásate a la <a href="#tienda" class="inline-link">Tienda</a>. Bodegas, gimnasios, discotecas, eventos y mayoristas: margen atractivo y rotación rápida.</p>
+    </div>
+    <div class="b2b-wrap">
+      <div class="b2b-benefits">
+        <div class="b2b-item reveal" data-delay="0"><strong>📦 Pedido mínimo bajo</strong><span>Arranca con poco inventario y reabastece según rotación.</span></div>
+        <div class="b2b-item reveal" data-delay="1"><strong>💰 Margen atractivo</strong><span>Precio sugerido pensado para que ganes en cada unidad.</span></div>
+        <div class="b2b-item reveal" data-delay="2"><strong>⚡ Rotación rápida</strong><span>Formato y precio de impulso: alta recompra en bodega.</span></div>
+        <div class="b2b-item reveal" data-delay="3"><strong>🎯 Material POP</strong><span>Display y punto de venta para que tu mostrador venda solo.</span></div>
+      </div>
+      <form class="b2b-form reveal" id="b2bForm" novalidate>
+        <h3>Quiero distribuir</h3>
+        <div class="field-row">
+          <label class="field"><span>Nombre*</span><input type="text" name="nombre" required placeholder="Tu nombre" /></label>
+          <label class="field"><span>Empresa</span><input type="text" name="empresa" placeholder="Negocio / razón social" /></label>
+        </div>
+        <div class="field-row">
+          <label class="field"><span>Ciudad*</span><input type="text" name="ciudad" required placeholder="Lima, Arequipa…" /></label>
+          <label class="field"><span>Teléfono*</span><input type="tel" name="telefono" required placeholder="+51 9xx xxx xxx" /></label>
+        </div>
+        <label class="field"><span>Correo*</span><input type="email" name="correo" required placeholder="tucorreo@ejemplo.com" /></label>
+        <label class="field"><span>Tipo de canal</span><select name="canal"><option>Bodega / minimarket</option><option>Gimnasio</option><option>Discoteca / bar</option><option>Eventos</option><option>Mayorista</option><option>Otro</option></select></label>
+        <button type="submit" class="btn btn-primary magnetic" style="width:100%;justify-content:center">Enviar solicitud</button>
+        <p class="form-note" id="b2bNote" hidden>✓ ¡Recibido! Te contactaremos en menos de 24h. <em>(demo)</em></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ CTA FINAL ░░ -->
+<section class="cta" id="contacto">
+  <div class="cta-media" aria-hidden="true">
+    <img src="assets/loa-bmx-sunset.jpg" alt="" loading="lazy" />
+    <div class="cta-veil"></div>
+  </div>
+  <div class="container cta-inner reveal">
+    <span class="eyebrow eyebrow-cit" style="justify-content:center">Despierta tu agua</span>
+    <blockquote class="cta-quote">La energía que no pide permiso<br>cabe <em>en tu bolsillo</em>.</blockquote>
+    <div class="cta-actions">
+      <a href="#tienda" class="btn btn-primary magnetic">Comprar ahora
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="https://wa.me/51987654321?text=Hola%20Loa%20Viva" target="_blank" rel="noopener" class="btn btn-ghost magnetic">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="#inicio" class="brand"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z"/><path d="M17 9l-6 9h4l-1 6 6-9h-4z" class="brand-bolt"/></svg><span class="brand-name">LOA<i>VIVA</i></span></a>
+      <p>Despierta el agua. Saludable no tiene que ser aburrido ni caro.</p>
+      <div class="socials"><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">Facebook</a><a href="#">X</a></div>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Tienda</h4><a href="#tienda">Loa Hidrata</a><a href="#tienda">Loa Activa</a><a href="#tienda">Loa Defensas</a><a href="#tienda">Packs</a></div>
+      <div class="footer-col"><h4>Marca</h4><a href="#racing">Racing</a><a href="#aliados">Aliados</a><a href="#distribucion">Distribución</a><a href="#contacto">Contacto</a></div>
+      <div class="footer-col"><h4>Legal</h4><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p class="legal-note">Loa Viva es un complemento de hidratación con vitaminas y minerales. <strong>Sin cafeína · sin azúcar añadida.</strong> No reemplaza una alimentación balanceada ni la ingesta de agua. Mantener fuera del alcance de niños pequeños sin supervisión.</p>
+    <p class="copyright">© 2025 Loa Viva · Lima, Perú · <span class="demo-flag">Testimonios, aliados, equipo racing y datos de contacto son simulaciones de demostración. Imágenes generadas con IA.</span></p>
+  </div>
+</footer>
+
+<!-- ░░ CART ░░ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Carrito">
+  <div class="cart-head"><h3>Tu carrito</h3><button class="cart-close" id="cartClose" aria-label="Cerrar">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><strong id="cartTotal">S/0.00</strong></div>
+    <button class="btn btn-primary" id="checkoutBtn" style="width:100%;justify-content:center">Finalizar compra</button>
+    <p class="cart-note" id="cartNote" hidden>✓ ¡Pedido recibido! Te contactaremos para coordinar la entrega. <em>(demo)</em></p>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="script.js" defer></script>
+</body>
+</html>
