@@ -45,7 +45,7 @@
   const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
   const TESTIMONIALS = [
-    { n: 'Diego R.', r: 'Miraflores · gym 3x/sem', img: 12, s: 5, t: 'Cambié la gaseosa del almuerzo por Loa Activa y rindo igual en el gym, sin el bajón de azúcar. No vuelvo atrás.' },
+    { n: 'desarrollador1', r: 'Miraflores · gym 3x/sem', img: 12, s: 5, t: 'Cambié la gaseosa del almuerzo por Loa Activa y rindo igual en el gym, sin el bajón de azúcar. No vuelvo atrás.' },
     { n: 'Sandra M.', r: 'San Miguel · mamá', img: 45, s: 5, t: 'Mis hijos por fin toman agua. La de berries les encanta y a mí me deja tranquila: cero azúcar.' },
     { n: 'Carla P.', r: 'San Isidro · oficina', img: 47, s: 5, t: 'La llevo en la mochila a la oficina. Una pastilla y adiós al café de las 4pm. Mi hidratación cambió por completo.' },
     { n: 'Andrés V.', r: 'Surco', img: 33, s: 4, t: 'Sabor real sin culpa. Increíble que cueste casi lo mismo que una gaseosa de bodega.' },

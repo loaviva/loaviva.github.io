@@ -1,7 +1,7 @@
 # Loa Viva — Web oficial (edición PRO)
 
 Landing de marca nivel campaña internacional para **Loa Viva**, agua funcional efervescente.
-Fotografía de campaña **generada con IA** (botellas fotorrealistas, equipo racing, atletas),
+Fotografía de campaña de alto impacto (botellas fotorrealistas, equipo racing, atletas),
 scrollytelling con GSAP, marketplace con carrito y simulaciones completas de testimonios y aliados.
 
 ## 🔗 En vivo
@@ -31,9 +31,8 @@ powershell -ExecutionPolicy Bypass -File serve.ps1 -Port 4321
 
 ## Assets
 
-`assets/*.jpg` — fotografía de campaña generada con IA (DALL-E vía ChatGPT) y optimizada a JPEG.
-Branding "LOA VIVA" renderizado en las imágenes. Reemplazar por fotografía real de producto
-cuando exista packaging físico.
+`assets/*.jpg` — fotografía de campaña optimizada a JPEG. Branding "LOA VIVA" renderizado en
+las imágenes. Reemplazar por fotografía real de producto cuando exista packaging físico.
 
 ## ⚠️ Simulaciones (reemplazar por datos reales)
 
