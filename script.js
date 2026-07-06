@@ -169,31 +169,45 @@
         const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
         audioCtx = audioCtx || new AC();
         const ctx = audioCtx; if (ctx.state === 'suspended') ctx.resume();
-        const now = ctx.currentTime, dur = 2.7;
-        const master = ctx.createGain(); master.connect(ctx.destination);
+        const now = ctx.currentTime, dur = 3.2;
+        // ── V12 realista: un solo acelerón (ralentí → corte ~12k RPM → baja) ──
+        const tPeak = now + 1.05, tHold = now + 1.7, tEnd = now + dur;
+        const rpm = [[now, 2600], [now + 0.10, 3200], [tPeak, 12000], [tHold, 11000], [tEnd, 3800]];
+        const crank = (r) => r / 60;                 // frecuencia de giro del cigüeñal (Hz)
+        // Salida con compresor para "pegar" y controlar picos
+        const master = ctx.createGain();
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -14; comp.ratio.value = 6; comp.attack.value = 0.003; comp.release.value = 0.25;
+        master.connect(comp); comp.connect(ctx.destination);
         master.gain.setValueAtTime(0.0001, now);
-        master.gain.linearRampToValueAtTime(0.5, now + 0.5);
-        master.gain.setValueAtTime(0.5, now + 1.4);
-        master.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
-        lp.frequency.setValueAtTime(420, now);
-        lp.frequency.linearRampToValueAtTime(3600, now + 0.7);
-        lp.frequency.linearRampToValueAtTime(700, now + dur);
-        lp.connect(master);
-        const shaper = ctx.createWaveShaper(); shaper.curve = makeDist(38); shaper.oversample = '2x'; shaper.connect(lp);
-        [60, 90, 120].forEach((base, i) => {
-          const o = ctx.createOscillator(); o.type = i === 0 ? 'sawtooth' : 'square';
-          const g = ctx.createGain(); g.gain.value = i === 0 ? 0.6 : 0.16;
-          o.frequency.setValueAtTime(base, now);
-          o.frequency.exponentialRampToValueAtTime(base * 3.4, now + 0.55);
-          o.frequency.exponentialRampToValueAtTime(base * 1.4, now + dur);
-          o.connect(g); g.connect(shaper); o.start(now); o.stop(now + dur + 0.05);
+        master.gain.linearRampToValueAtTime(0.42, now + 0.10);
+        master.gain.linearRampToValueAtTime(0.60, tPeak);
+        master.gain.linearRampToValueAtTime(0.52, tHold);
+        master.gain.exponentialRampToValueAtTime(0.0001, tEnd);
+        // El motor "se abre" (más brillo) al subir de vueltas
+        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.7;
+        lp.frequency.setValueAtTime(750, now);
+        lp.frequency.linearRampToValueAtTime(7600, tPeak);
+        lp.frequency.linearRampToValueAtTime(2800, tEnd);
+        const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 85;
+        const shaper = ctx.createWaveShaper(); shaper.curve = makeDist(16); shaper.oversample = '4x';
+        lp.connect(shaper); shaper.connect(hp); hp.connect(master);
+        // Órdenes de motor de un V12 4T: la 6.ª orden domina (6 explosiones/vuelta) = el chillido
+        const orders = [[1, 0.10, 'sawtooth'], [2, 0.08, 'sawtooth'], [3, 0.13, 'sawtooth'],
+                        [6, 0.30, 'sawtooth'], [9, 0.10, 'square'], [12, 0.07, 'square']];
+        orders.forEach(([ord, amp, type]) => {
+          const o = ctx.createOscillator(); o.type = type;
+          const g = ctx.createGain(); g.gain.value = amp;
+          o.frequency.setValueAtTime(ord * crank(rpm[0][1]), now);
+          for (let k = 1; k < rpm.length; k++) o.frequency.exponentialRampToValueAtTime(Math.max(ord * crank(rpm[k][1]), 0.001), rpm[k][0]);
+          o.connect(g); g.connect(lp); o.start(now); o.stop(tEnd + 0.05);
         });
+        // Aire de admisión/escape: ruido filtrado que sube con las vueltas
         const noise = ctx.createBufferSource(); noise.buffer = makeNoise(ctx, dur);
-        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 0.7;
+        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2600; bp.Q.value = 0.6;
         const ng = ctx.createGain(); ng.gain.setValueAtTime(0.0001, now);
-        ng.gain.linearRampToValueAtTime(0.22, now + 0.6); ng.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-        noise.connect(bp); bp.connect(ng); ng.connect(master); noise.start(now); noise.stop(now + dur + 0.05);
+        ng.gain.linearRampToValueAtTime(0.15, tPeak); ng.gain.exponentialRampToValueAtTime(0.0001, tEnd);
+        noise.connect(bp); bp.connect(ng); ng.connect(master); noise.start(now); noise.stop(tEnd + 0.05);
       } catch (e) { /* audio no disponible: la animación visual sigue */ }
     }
     const doRev = () => {
