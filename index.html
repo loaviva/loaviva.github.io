@@ -45,10 +45,14 @@
 
 <!-- ░░ NAV ░░ -->
 <header class="nav" id="nav">
-  <a href="#inicio" class="brand" aria-label="Loa Viva — inicio">
-    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z"/><path d="M17 9l-6 9h4l-1 6 6-9h-4z" class="brand-bolt"/></svg>
-    <span class="brand-name">LOA<i>VIVA</i></span>
-  </a>
+  <div class="brand" aria-label="Loa Viva">
+    <a href="dashboard/" class="brand-drop" title="Ver el dashboard de resultados" aria-label="Ver el dashboard de resultados">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z"/><path d="M17 9l-6 9h4l-1 6 6-9h-4z" class="brand-bolt"/></svg>
+    </a>
+    <a href="#inicio" class="brand-home" aria-label="Loa Viva — inicio">
+      <span class="brand-name">LOA<i>VIVA</i></span>
+    </a>
+  </div>
   <nav class="nav-links" aria-label="Principal">
     <a href="#producto">Producto</a>
     <a href="#racing">Racing</a>
@@ -172,7 +176,7 @@
     </div>
 
     <div class="rev-stage" id="revStage">
-      <button class="rev-btn" id="revBtn" type="button" aria-label="Acelerar: activa la animación con sonido de motor">
+      <button class="rev-btn" id="revBtn" type="button" aria-label="Acelerar: activa la animación del auto">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19a9 9 0 1 1 14 0"/><path d="M12 13.5 16 9"/><circle cx="12" cy="13.8" r="1.4" fill="currentColor" stroke="none"/></svg>
         <span>ACELERAR</span>
       </button>
@@ -411,6 +415,7 @@
       <div class="footer-col"><h4>Tienda</h4><a href="#tienda">Loa Hidrata</a><a href="#tienda">Loa Activa</a><a href="#tienda">Loa Defensas</a><a href="#tienda">Packs</a></div>
       <div class="footer-col"><h4>Marca</h4><a href="#racing">Racing</a><a href="#aliados">Aliados</a><a href="#distribucion">Distribución</a><a href="#contacto">Contacto</a></div>
       <div class="footer-col"><h4>Legal</h4><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Cookies</a></div>
+      <div class="footer-col"><h4>Resultados</h4><a href="dashboard/" class="footer-dash">Dashboard financiero</a></div>
     </div>
   </div>
   <div class="container footer-bottom">
