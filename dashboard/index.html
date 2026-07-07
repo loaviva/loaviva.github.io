@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loa Viva · Dashboard Financiero</title>
+<style>
+  :root{
+    --navy:#122a4e; --navy2:#1e3a63; --ink:#1c2536; --muted:#66707f;
+    --line:#e6e9ef; --bg:#eff2f7; --card:#ffffff;
+    --blue:#2563eb; --teal:#0d9488; --gold:#d99a1c; --green:#15a34a;
+    --fuchsia:#db2777; --purple:#7c3aed; --pos:#15a34a; --neg:#dc2626;
+    --shadow:0 1px 2px rgba(16,24,40,.08),0 1px 3px rgba(16,24,40,.05);
+    --shadow2:0 10px 30px rgba(16,24,40,.12);
+    --ring:0 0 0 3px rgba(37,99,235,.25);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.45; -webkit-font-smoothing:antialiased;
+    font-feature-settings:"kern" 1;
+  }
+  .tnum{font-variant-numeric:tabular-nums}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 64px}
+  header{
+    background:radial-gradient(1200px 300px at 15% -40%,rgba(13,148,136,.55),transparent 60%),
+               linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+    color:#fff;padding:28px 0 24px;box-shadow:var(--shadow2);
+  }
+  .head-in{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand-badge{
+    width:54px;height:54px;border-radius:15px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--teal),var(--blue));
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.28),0 6px 16px rgba(13,148,136,.35);letter-spacing:-1px;
+  }
+  header h1{margin:0;font-size:21px;font-weight:750;letter-spacing:-.2px;text-wrap:balance}
+  header .sub{margin:3px 0 0;font-size:13px;opacity:.82;font-weight:400}
+  .chip{display:inline-block;margin-top:7px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#eaf0f7}
+  .head-meta{margin-left:auto;text-align:right;font-size:12px;opacity:.82}
+  .head-meta b{display:block;font-size:20px;opacity:1;font-weight:700}
+  nav.tabs{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+  .tabs-in{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
+  .tab{appearance:none;border:0;background:transparent;color:var(--muted);
+    padding:14px 16px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+    border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s}
+  .tab:hover{color:var(--ink)}
+  .tab:focus-visible{outline:none;box-shadow:var(--ring);border-radius:6px}
+  .tab.active{color:var(--navy);border-bottom-color:var(--blue)}
+  section{display:none;animation:fade .28s ease}
+  section.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){section{animation:none}}
+  h2.sec{font-size:16px;margin:26px 2px 4px;font-weight:700;color:var(--navy)}
+  p.hint{margin:0 2px 14px;color:var(--muted);font-size:13px;max-width:840px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-top:20px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+  .kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue)}
+  .kpi.k-teal::before{background:var(--teal)} .kpi.k-gold::before{background:var(--gold)}
+  .kpi.k-green::before{background:var(--green)} .kpi.k-neg::before{background:var(--neg)}
+  .kpi.k-purple::before{background:var(--purple)}
+  .kpi .lbl{font-size:11px;color:var(--muted);font-weight:650;text-transform:uppercase;letter-spacing:.5px}
+  .kpi .val{font-size:24px;font-weight:800;margin:5px 0 1px;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+  .kpi .foot{font-size:11.5px;color:var(--muted)}
+  .kpi .foot.pos{color:var(--pos);font-weight:600} .kpi .foot.neg{color:var(--neg);font-weight:600}
+  .grid{display:grid;gap:16px;margin-top:16px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:1.4fr 1fr}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px;box-shadow:var(--shadow)}
+  .card h3{margin:0 0 2px;font-size:14.5px;font-weight:700;color:var(--navy)}
+  .card .csub{margin:0 0 10px;font-size:12px;color:var(--muted)}
+  .chart{width:100%;height:auto;overflow:visible;display:block}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;flex:0 0 auto}
+  table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+  table.tbl th,table.tbl td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  table.tbl td:not(:first-child){font-variant-numeric:tabular-nums}
+  table.tbl th:first-child,table.tbl td:first-child{text-align:left}
+  table.tbl th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.3px}
+  table.tbl tr:last-child td{border-bottom:0}
+  table.tbl tbody tr:hover td{background:#f7f9fc}
+  table.tbl tr.total td{font-weight:800;color:var(--navy);border-top:2px solid var(--navy);background:#f6f8fb}
+  .pos{color:var(--pos)} .neg{color:var(--neg)}
+  .grid-l{stroke:#eef1f6;stroke-width:1}
+  .zero{stroke:#c3cad4;stroke-width:1.4;stroke-dasharray:3 3}
+  .lbl-x{fill:var(--muted);font-size:11px} .lbl-y{fill:var(--muted);font-size:10.5px;font-variant-numeric:tabular-nums}
+  .bar{transition:opacity .12s}
+  svg [data-tip]{cursor:pointer} svg [data-tip]:hover{opacity:.82}
+  .barlbl{fill:var(--ink);font-size:10px;font-weight:700;font-variant-numeric:tabular-nums}
+  #tt{position:fixed;pointer-events:none;z-index:99;background:#0f172a;color:#fff;
+    padding:9px 11px;border-radius:9px;font-size:12px;line-height:1.4;opacity:0;
+    transition:opacity .12s;box-shadow:0 10px 28px rgba(0,0,0,.32);max-width:250px;font-variant-numeric:tabular-nums}
+  #tt b{color:#fff;font-weight:700} #tt .t-pos{color:#4ade80;font-weight:700} #tt .t-neg{color:#f87171;font-weight:700}
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+  .pill.ok{background:#dcfce7;color:#166534}
+  .note{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:12px;padding:12px 14px;font-size:12.5px;margin-top:18px}
+</style>
+</head>
+<body>
+<div id="tt"></div>
+<header>
+  <div class="head-in">
+    <div class="brand-badge">LV</div>
+    <div>
+      <h1>Loa Viva — Dashboard del Estado de Resultados</h1>
+      <div class="sub">Plan de Marketing B2C · Industrias San Miguel</div>
+      <span class="chip">Cifras del documento final (Word) · Año 1: 2026</span>
+    </div>
+    <div class="head-meta">
+      Gerencia de Marketing · ULima
+      <b>2026 – 2030</b>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-in" id="tabbar">
+    <button class="tab active" data-tab="resumen">Resumen Año 1</button>
+    <button class="tab" data-tab="pl">Estructura P&amp;L</button>
+    <button class="tab" data-tab="margenes">Márgenes</button>
+    <button class="tab" data-tab="bep">Punto de equilibrio</button>
+    <button class="tab" data-tab="proy">Escenarios 2026–2030</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- RESUMEN -->
+  <section id="resumen" class="active">
+    <div class="kpis">
+      <div class="kpi k-teal"><div class="lbl">Ventas Año 1</div><div class="val">S/ 17.0M</div><div class="foot">Ingresos del plan operacional</div></div>
+      <div class="kpi"><div class="lbl">Costo de ventas</div><div class="val">S/ 10.5M</div><div class="foot">61.7% de las ventas</div></div>
+      <div class="kpi k-gold"><div class="lbl">Utilidad bruta</div><div class="val">S/ 6.5M</div><div class="foot">Margen bruto 38.26%</div></div>
+      <div class="kpi k-purple"><div class="lbl">Gastos comerciales</div><div class="val">S/ 5.99M</div><div class="foot">35.2% de ventas · 92% de la U. bruta</div></div>
+      <div class="kpi k-green"><div class="lbl">Utilidad operativa</div><div class="val">+S/ 0.51M</div><div class="foot pos">Margen operativo 7.90%</div></div>
+      <div class="kpi"><div class="lbl">1er mes en positivo</div><div class="val">Marzo</div><div class="foot">Acumulado positivo desde setiembre</div></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <h3>Utilidad operativa mensual (2026)</h3>
+        <p class="csub">Barras = resultado del mes · Línea = utilidad operativa acumulada · S/ miles</p>
+        <div id="c_uo"></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--neg)"></i>U. operativa (−)</span>
+          <span><i class="dot" style="background:var(--green)"></i>U. operativa (+)</span>
+          <span><i class="dot" style="background:var(--navy)"></i>Acumulada</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Estacionalidad de ventas</h3>
+        <p class="csub">Ventas por mes · S/ miles</p>
+        <div id="c_ventas"></div>
+        <div class="legend"><span><i class="dot" style="background:var(--teal)"></i>Ventas</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Lectura clave.</b> Con las cifras del documento, el plan operacional cierra el año 1 con <b>utilidad operativa positiva de +S/ 513,545 (7.90%)</b>,
+      pese a absorber S/ 5.99M de gastos comerciales (92% de la utilidad bruta). El resultado mensual es negativo en el arranque
+      (enero–febrero) y durante la campaña de frío (mayo–agosto), pero la utilidad acumulada cruza a positivo en <b>setiembre</b> y termina el año en verde.
+    </div>
+  </section>
+
+  <!-- P&L -->
+  <section id="pl">
+    <h2 class="sec">De las ventas a la utilidad operativa — cascada</h2>
+    <p class="hint">Cómo se transforma cada sol de venta hasta el resultado operativo del año 1 (plan operacional del documento). Cifras en S/ millones.</p>
+    <div class="card">
+      <h3>Cascada del estado de resultados 2026</h3>
+      <p class="csub">Verde/azul = ingreso o subtotal · Rojo = deducción</p>
+      <div id="c_waterfall"></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>¿En qué se van los S/ 5.99M de gastos comerciales?</h3>
+        <p class="csub">Los tres grandes bloques del gasto comercial · S/ millones</p>
+        <div id="c_gc"></div>
+        <div class="legend" id="lg_gc"></div>
+      </div>
+      <div class="card">
+        <h3>Actividades al consumidor (S/ 1.40M)</h3>
+        <p class="csub">Desglose de la partida al consumidor · S/ miles</p>
+        <div id="c_cons"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Estado de resultados operativo — resumen anual</h3>
+      <table class="tbl">
+        <thead><tr><th>Concepto</th><th>S/</th><th>% Ventas</th></tr></thead>
+        <tbody>
+          <tr><td>Ventas</td><td>17,000,000</td><td>100%</td></tr>
+          <tr><td>(−) Costo de ventas</td><td class="neg">−10,495,455</td><td>−61.7%</td></tr>
+          <tr class="total"><td>Utilidad bruta</td><td>6,504,545</td><td>38.26%</td></tr>
+          <tr><td>(−) Trade marketing</td><td class="neg">−1,830,000</td><td>−10.8%</td></tr>
+          <tr><td>(−) Actividades al consumidor</td><td class="neg">−1,400,000</td><td>−8.2%</td></tr>
+          <tr><td>(−) Plan de medios</td><td class="neg">−2,761,000</td><td>−16.2%</td></tr>
+          <tr class="total"><td>Utilidad operativa</td><td class="pos">+513,545</td><td>7.90%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MARGENES -->
+  <section id="margenes">
+    <h2 class="sec">Rentabilidad por formato y canal</h2>
+    <p class="hint">Margen de contribución sobre precio ex fábrica ponderado (Tablas 3.7 y 3.8 del documento). El sachet es el más rentable en %, pero el volumen lo cargan el tubo y la caja.</p>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Margen de contribución % por formato</h3>
+        <p class="csub">Línea punteada = margen bruto del plan (38.3%)</p>
+        <div id="c_mcformat"></div>
+      </div>
+      <div class="card">
+        <h3>Mix de ventas por formato</h3>
+        <p class="csub">Proporción usada en el punto de equilibrio</p>
+        <div id="c_mix"></div>
+        <div class="legend" id="lg_mix"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Margen de contribución del tubo de 10 por canal</h3>
+      <p class="csub">Formato núcleo · PVP S/ 9.90 · el mark up del canal tradicional comprime más el margen</p>
+      <div id="c_channel"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Detalle por formato</h3>
+      <table class="tbl">
+        <thead><tr><th>Formato</th><th>Ex fábrica</th><th>Costo var.</th><th>MC (S/)</th><th>MC %</th><th>Mix</th><th>Rol</th></tr></thead>
+        <tbody id="tb_format"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- BEP -->
+  <section id="bep">
+    <h2 class="sec">Punto de equilibrio</h2>
+    <p class="hint">Ventas mínimas para cubrir los S/ 5.99M de costos fijos (gastos comerciales), repartidos por formato según su proporción de ventas.</p>
+    <div class="kpis">
+      <div class="kpi k-green"><div class="lbl">BEP total (valor)</div><div class="val">S/ 16.76M</div><div class="foot pos">Ventas año 1 lo superan</div></div>
+      <div class="kpi k-teal"><div class="lbl">Ventas Año 1</div><div class="val">S/ 17.0M</div><div class="foot">101% del punto de equilibrio</div></div>
+      <div class="kpi k-gold"><div class="lbl">BEP en unidades</div><div class="val">1.90M</div><div class="foot">Suma de unidades por formato</div></div>
+      <div class="kpi"><div class="lbl">Margen sobre BEP</div><div class="val">+S/ 0.24M</div><div class="foot pos">Colchón sobre el umbral</div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Ventas vs. punto de equilibrio</h3>
+        <p class="csub">Las ventas del año 1 cubren el 101% del BEP — equilibrio superado</p>
+        <div id="c_gauge"></div>
+      </div>
+      <div class="card">
+        <h3>Punto de equilibrio por formato (valor)</h3>
+        <p class="csub">Ventas necesarias por formato para cubrir su costo fijo asignado · S/ millones</p>
+        <div id="c_bepbars"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Detalle del punto de equilibrio por formato</h3>
+      <table class="tbl">
+        <thead><tr><th>Formato</th><th>MCU (S/)</th><th>Costo fijo (S/)</th><th>Prop.</th><th>PE unidades</th><th>PE valor (S/)</th></tr></thead>
+        <tbody id="tb_bep"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ESCENARIOS -->
+  <section id="proy">
+    <h2 class="sec">Escenarios de ingresos 2026–2030</h2>
+    <p class="hint">Proyección de ingresos (RSP) en tres escenarios sobre el mercado de referencia ampliado. La cifra de S/ 28M del resumen ejecutivo se alcanza de forma sustentada hacia 2028 en el escenario base.</p>
+    <div class="kpis">
+      <div class="kpi k-neg"><div class="lbl">Conservador · acum.</div><div class="val">S/ 17.6M</div><div class="foot">Perú, formato tubo</div></div>
+      <div class="kpi k-teal"><div class="lbl">Base · acum.</div><div class="val">S/ 107.5M</div><div class="foot">Penetración 0.10% → 1.20%</div></div>
+      <div class="kpi k-green"><div class="lbl">Aspiracional · acum.</div><div class="val">S/ 157.2M</div><div class="foot">Penetración 0.14% → 1.79%</div></div>
+      <div class="kpi k-gold"><div class="lbl">Base 2030</div><div class="val">S/ 41.6M</div><div class="foot">Aspiracional: S/ 62.1M</div></div>
+    </div>
+    <div class="card">
+      <h3>Ingresos anuales por escenario (RSP)</h3>
+      <p class="csub">S/ millones · 2026 corresponde al medio año de lanzamiento</p>
+      <div id="c_scen"></div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--neg)"></i>Conservador</span>
+        <span><i class="dot" style="background:var(--blue)"></i>Base</span>
+        <span><i class="dot" style="background:var(--green)"></i>Aspiracional</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Penetración del mercado de referencia (base)</h3>
+        <p class="csub">% del mercado ampliado de S/ 3,468.5M capturado por Loa Viva</p>
+        <div id="c_pen"></div>
+      </div>
+      <div class="card">
+        <h3>Ingresos por escenario</h3>
+        <table class="tbl">
+          <thead><tr><th>Escenario</th><th>2026</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th><th>Acum.</th></tr></thead>
+          <tbody id="tb_scen"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>Fuente:</b> documento final del trabajo (Word) — plan operacional del primer año, punto de equilibrio por formato, márgenes de contribución (Tablas 3.7 y 3.8) y escenarios de demanda 2026–2030.
+    RSP = precio al consumidor · MC = margen de contribución · MCU = margen de contribución unitario · BEP = punto de equilibrio · U. = utilidad.
+    <br><br>
+    <span class="pill ok">Cifras del documento final</span> Plan operacional: Ventas S/ 17M · utilidad operativa +S/ 513,545 (7.90%). Corroborado 25/25 contra el documento.
+  </footer>
+</div>
+
+<script>
+/* ================= DATA (cifras del documento final / Word) ================= */
+const MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const VENTAS_M=[2210,2040,1700,1360,1190,1020,1020,1020,1190,1360,1360,1530];        // S/ miles
+const UO_M=[-79.1,-34.2,25.9,84.8,-55.2,-5.3,-5.3,-5.3,129.8,194.8,98.8,163.8];       // S/ miles
+const UO_AC=[-79.1,-113.3,-87.4,-2.5,-57.8,-63.1,-68.3,-73.6,56.2,251.0,349.7,513.5]; // S/ miles
+
+const GC=[['Plan de medios',2.761,'#2563eb'],['Trade marketing',1.830,'#0d9488'],['Actividades consumidor',1.400,'#d99a1c']];
+const CONS=[
+  ['Campaña frío Defensas',280,'#0d9488'],['BTL universidades',260,'#2563eb'],
+  ['Prelanzamiento',220,'#d99a1c'],['Reto TikTok',190,'#db2777'],
+  ['Alianzas gimnasios',180,'#15a34a'],['Suscripción / loyalty',150,'#7c3aed'],
+  ['Evento de lanzamiento',120,'#64748b']
+];
+
+const FMT=[
+  ['Tubo de 10',7.11,4.00,3.11,43.78,30,'Generador de caja','#2563eb'],
+  ['Caja de 30',17.89,12.00,5.89,32.94,50,'Recompra y fidelización','#0d9488'],
+  ['Sachet de 3',2.52,1.20,1.32,52.29,15,'Trial / penetración bodega','#d99a1c'],
+  ['Suscripción D2C',14.33,12.00,2.33,16.29,5,'Datos + recurrencia (LTV)','#7c3aed']
+];
+const MARGEN_BRUTO=38.26;
+const CHAN=[['Moderno (70%)',45.17,'#15a34a'],['Online D2C (10%)',43.91,'#2563eb'],['Tradicional (20%)',38.21,'#d99a1c']];
+
+const BEP=[
+  ['Tubo de 10',3.11,1797300,30,577035,4105440,'#2563eb'],
+  ['Caja de 30',5.89,2995500,50,508178,9093636,'#0d9488'],
+  ['Sachet de 3',1.32,898650,15,683227,1718523,'#d99a1c'],
+  ['Suscripción D2C',2.33,299550,5,128301,1839162,'#7c3aed']
+];
+const BEP_TOTAL_VAL=16756761, VENTAS_TOTAL=17000000;
+
+const ANIOS=['2026','2027','2028','2029','2030'];
+const CONSERV=[0.6,1.7,3.2,5.3,6.8];
+const BASE=[3.5,10.4,20.8,31.2,41.6];
+const ASPIR=[4.9,17.0,28.1,45.1,62.1];
+const PEN=[0.10,0.30,0.60,0.90,1.20];
+
+/* ================= HELPERS ================= */
+function svg(w,h){return `<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img">`;}
+const money=v=>'S/ '+v.toLocaleString('es-PE',{maximumFractionDigits:2});
+const miles=v=>(v<0?'−':'')+'S/ '+Math.abs(v).toLocaleString('es-PE',{maximumFractionDigits:1})+'k';
+const mill =v=>(v<0?'−':'')+'S/ '+Math.abs(v).toLocaleString('es-PE',{maximumFractionDigits:2})+'M';
+const pesos=v=>(v<0?'−':'')+'S/ '+Math.abs(v).toLocaleString('es-PE');
+/* quote-safe tooltip attribute: escapes " so inner HTML never breaks the SVG attribute */
+const dt = html => `data-tip="${String(html).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`;
+
+const tt=document.getElementById('tt');
+document.addEventListener('mousemove',e=>{
+  const t=e.target.closest('[data-tip]');
+  if(t){tt.innerHTML=t.getAttribute('data-tip');tt.style.opacity=1;
+    let x=e.clientX+14,y=e.clientY+16;
+    if(x+tt.offsetWidth>innerWidth)x=e.clientX-tt.offsetWidth-14;
+    if(y+tt.offsetHeight>innerHeight)y=e.clientY-tt.offsetHeight-16;
+    tt.style.left=x+'px';tt.style.top=y+'px';}
+  else tt.style.opacity=0;
+},{passive:true});
+
+/* combo bars + line — utilidad operativa mensual */
+function chartUO(){
+  const W=520,H=300,pl=50,pr=12,pt=16,pb=28,pw=W-pl-pr,ph=H-pt-pb;
+  const allv=UO_M.concat(UO_AC);
+  let mn=Math.min(...allv),mx=Math.max(...allv);
+  mn=Math.floor(mn/100)*100;mx=Math.ceil(mx/100)*100;
+  const sy=v=>pt+(mx-v)/(mx-mn)*ph, bw=pw/12*0.56;
+  let s=svg(W,H);
+  for(let g=mn;g<=mx;g+=100){const y=sy(g);
+    s+=`<line class="grid-l" x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}"/>`;
+    s+=`<text class="lbl-y" x="${pl-6}" y="${y+3}" text-anchor="end">${g}k</text>`;}
+  const y0=sy(0);
+  s+=`<line class="zero" x1="${pl}" y1="${y0}" x2="${W-pr}" y2="${y0}"/>`;
+  UO_M.forEach((v,i)=>{const cx=pl+pw/12*(i+0.5),x=cx-bw/2,y=v>=0?sy(v):y0,hh=Math.abs(sy(v)-y0);
+    const col=v>=0?'var(--green)':'var(--neg)';
+    const tip=`<b>${MESES[i]} 2026</b><br>U. operativa: <span class='${v>=0?'t-pos':'t-neg'}'>${miles(v)}</span><br>Acumulada: <span class='${UO_AC[i]>=0?'t-pos':'t-neg'}'>${miles(UO_AC[i])}</span>`;
+    s+=`<rect class="bar" x="${x}" y="${y}" width="${bw}" height="${Math.max(hh,1)}" rx="2.5" fill="${col}" ${dt(tip)}/>`;
+    s+=`<text class="lbl-x" x="${cx}" y="${H-9}" text-anchor="middle">${MESES[i][0]}</text>`;});
+  let path='';UO_AC.forEach((v,i)=>{const cx=pl+pw/12*(i+0.5),cy=sy(v);path+=(i?'L':'M')+cx+' '+cy+' ';});
+  s+=`<path d="${path}" fill="none" stroke="var(--navy)" stroke-width="2.4"/>`;
+  UO_AC.forEach((v,i)=>{const cx=pl+pw/12*(i+0.5),cy=sy(v);
+    const tip=`<b>${MESES[i]} 2026</b><br>Acumulada: <span class='${v>=0?'t-pos':'t-neg'}'>${miles(v)}</span>`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="3.2" fill="#fff" stroke="var(--navy)" stroke-width="2" ${dt(tip)}/>`;});
+  const sx9=pl+pw/12*8.5, sy9=sy(UO_AC[8]);
+  s+=`<text x="${sx9}" y="${sy9-9}" text-anchor="middle" style="fill:var(--green);font-size:10px;font-weight:800">Acum. +</text>`;
+  s+='</svg>';
+  document.getElementById('c_uo').innerHTML=s;
+}
+
+/* monthly ventas bars */
+function chartVentas(){
+  const W=440,H=300,pl=44,pr=10,pt=16,pb=28,pw=W-pl-pr,ph=H-pt-pb;
+  const mx=2500;
+  const sy=v=>pt+(mx-v)/mx*ph, y0=pt+ph, bw=pw/12*0.6;
+  let s=svg(W,H);
+  for(let g=0;g<=mx;g+=500){const y=sy(g);
+    s+=`<line class="grid-l" x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}"/>`;
+    s+=`<text class="lbl-y" x="${pl-6}" y="${y+3}" text-anchor="end">${(g/1000).toFixed(1)}M</text>`;}
+  VENTAS_M.forEach((v,i)=>{const cx=pl+pw/12*(i+0.5),x=cx-bw/2,y=sy(v);
+    const tip=`<b>${MESES[i]} 2026</b><br>Ventas: <b>${miles(v)}</b>`;
+    s+=`<rect class="bar" x="${x}" y="${y}" width="${bw}" height="${y0-y}" rx="2.5" fill="var(--teal)" ${dt(tip)}/>`;
+    s+=`<text class="lbl-x" x="${cx}" y="${H-9}" text-anchor="middle">${MESES[i][0]}</text>`;});
+  s+='</svg>';
+  document.getElementById('c_ventas').innerHTML=s;
+}
+
+/* waterfall */
+function chartWaterfall(){
+  const steps=[
+    ['Ventas',17.0,'base','#0d9488'],
+    ['− Costo de ventas',-10.495,'delta','#dc2626'],
+    ['Utilidad bruta',6.505,'sub','#2563eb'],
+    ['− Gastos comerciales',-5.991,'delta','#dc2626'],
+    ['Utilidad operativa',0.514,'end','#15a34a']
+  ];
+  const W=820,H=340,pl=40,pr=12,pt=18,pb=54,pw=W-pl-pr,ph=H-pt-pb;
+  const mx=18,mn=0;
+  const sy=v=>pt+(mx-v)/(mx-mn)*ph;
+  const n=steps.length,slot=pw/n,bw=slot*0.5;
+  let s=svg(W,H);
+  for(let g=mn;g<=mx;g+=3){const y=sy(g);
+    s+=`<line class="grid-l" x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}"/>`;
+    s+=`<text class="lbl-y" x="${pl-6}" y="${y+3}" text-anchor="end">${g}</text>`;}
+  let run=0;
+  steps.forEach((st,i)=>{
+    const name=st[0],val=st[1],kind=st[2],col=st[3];
+    const cx=pl+slot*(i+0.5),x=cx-bw/2;
+    let top,bot,disp;
+    if(kind==='delta'){bot=run;run+=val;top=run;disp=val;}
+    else{top=val;bot=0;run=val;disp=val;}
+    const yT=sy(Math.max(top,bot)),hh=Math.abs(sy(top)-sy(bot));
+    const tip=`<b>${name}</b><br>${mill(disp)}`+(kind!=='delta'?' · subtotal':'');
+    s+=`<rect class="bar" x="${x}" y="${yT}" width="${bw}" height="${Math.max(hh,2)}" rx="2.5" fill="${col}" ${dt(tip)}/>`;
+    if(i<n-1 && kind!=='end'){const yc=sy(run);s+=`<line x1="${cx+bw/2}" y1="${yc}" x2="${cx+slot-bw/2}" y2="${yc}" stroke="#c3cad4" stroke-width="1" stroke-dasharray="2 2"/>`;}
+    const vy=(disp>=0?sy(top):sy(bot))-5;
+    const lc=kind==='delta'?'#dc2626':(kind==='end'?'#15a34a':'#122a4e');
+    s+=`<text class="barlbl" x="${cx}" y="${vy}" text-anchor="middle" fill="${lc}">${kind==='delta'?disp.toFixed(2):(kind==='end'?'+':'')+disp.toFixed(2)}</text>`;
+    name.split(' ').forEach((w,k)=>{s+=`<text class="lbl-x" x="${cx}" y="${H-pb+18+k*12}" text-anchor="middle">${w}</text>`;});
+  });
+  s+='</svg>';
+  document.getElementById('c_waterfall').innerHTML=s;
+}
+
+/* donut */
+function donut(elId,lgId,data,unitFn){
+  const W=280,H=240,cx=140,cy=120,r=86,ir=52;
+  const tot=data.reduce((a,d)=>a+d[1],0);
+  let ang=-Math.PI/2,s=svg(W,H);
+  data.forEach(d=>{
+    const frac=d[1]/tot,a2=ang+frac*Math.PI*2;
+    const x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang);
+    const x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
+    const xi2=cx+ir*Math.cos(a2),yi2=cy+ir*Math.sin(a2);
+    const xi1=cx+ir*Math.cos(ang),yi1=cy+ir*Math.sin(ang);
+    const large=frac>0.5?1:0;
+    const tip=`<b>${d[0]}</b><br>${unitFn(d[1])} · ${(frac*100).toFixed(1)}%`;
+    s+=`<path class="bar" d="M${x1} ${y1} A${r} ${r} 0 ${large} 1 ${x2} ${y2} L${xi2} ${yi2} A${ir} ${ir} 0 ${large} 0 ${xi1} ${yi1} Z" fill="${d[2]}" ${dt(tip)}/>`;
+    ang=a2;
+  });
+  s+=`<text x="${cx}" y="${cy-4}" text-anchor="middle" style="font-size:13px;font-weight:800;fill:var(--navy)">${unitFn(tot)}</text>`;
+  s+=`<text x="${cx}" y="${cy+13}" text-anchor="middle" style="font-size:10px;fill:var(--muted)">Total</text>`;
+  s+='</svg>';
+  document.getElementById(elId).innerHTML=s;
+  if(lgId)document.getElementById(lgId).innerHTML=data.map(d=>`<span><i class="dot" style="background:${d[2]}"></i>${d[0]} · ${(d[1]/tot*100).toFixed(0)}%</span>`).join('');
+}
+
+/* horizontal bars */
+function hbars(elId,rows,opt){
+  opt=opt||{};
+  const W=520,rowH=opt.rowH||38,pt=10,pb=8,pl=opt.pl||150,pr=64;
+  const H=pt+pb+rows.length*rowH;
+  const mx=opt.max||Math.max(...rows.map(r=>r.v))*1.1;
+  const sx=v=>pl+v/mx*(W-pl-pr);
+  let s=svg(W,H);
+  rows.forEach((r,i)=>{
+    const y=pt+i*rowH+6,bh=rowH-16;
+    s+=`<text x="${pl-8}" y="${y+bh/2+4}" text-anchor="end" style="font-size:12px;fill:var(--ink)">${r.name}</text>`;
+    s+=`<rect x="${pl}" y="${y}" width="${W-pl-pr}" height="${bh}" rx="4" fill="#eef2f7"/>`;
+    s+=`<rect class="bar" x="${pl}" y="${y}" width="${Math.max(sx(r.v)-pl,2)}" height="${bh}" rx="4" fill="${r.col}" ${dt(r.tip)}/>`;
+    s+=`<text x="${sx(r.v)+6}" y="${y+bh/2+4}" style="font-size:11.5px;font-weight:800;fill:${r.col};font-variant-numeric:tabular-nums">${r.lab}</text>`;
+  });
+  if(opt.ref!=null){const x=sx(opt.ref);
+    s+=`<line x1="${x}" y1="${pt-2}" x2="${x}" y2="${H-pb}" stroke="var(--navy)" stroke-width="1.6" stroke-dasharray="4 3"/>`;
+    s+=`<text x="${x}" y="${pt+6}" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:var(--navy)">${opt.refLab}</text>`;}
+  s+='</svg>';
+  document.getElementById(elId).innerHTML=s;
+}
+
+/* gauge — ventas vs BEP */
+function chartGauge(){
+  const W=440,H=250,cx=220,cy=200,r=150;
+  const frac=VENTAS_TOTAL/BEP_TOTAL_VAL, fill=Math.min(frac,1);
+  const a0=Math.PI,a1=0,ang=t=>a0+(a1-a0)*t;
+  function arc(t0,t1,rr,col,w,tip){
+    const x0=cx+rr*Math.cos(ang(t0)),y0=cy+rr*Math.sin(ang(t0));
+    const x1=cx+rr*Math.cos(ang(t1)),y1=cy+rr*Math.sin(ang(t1));
+    const large=(t1-t0)>0.5?1:0;
+    return `<path d="M${x0} ${y0} A${rr} ${rr} 0 ${large} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round"${tip?' '+dt(tip):''}/>`;
+  }
+  let s=svg(W,H);
+  s+=arc(0,1,r,'#e7ebf1',22);
+  s+=arc(0,fill,r,'url(#gg)',22,`<b>Ventas Año 1</b><br>S/ 17.0M · ${(frac*100).toFixed(0)}% del BEP`);
+  s+=`<defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0d9488"/><stop offset="1" stop-color="#15a34a"/></linearGradient></defs>`;
+  s+=`<text x="${cx}" y="${cy-28}" text-anchor="middle" style="font-size:30px;font-weight:800;fill:var(--green);font-variant-numeric:tabular-nums">${(frac*100).toFixed(0)}%</text>`;
+  s+=`<text x="${cx}" y="${cy-8}" text-anchor="middle" style="font-size:12px;fill:var(--muted)">del punto de equilibrio</text>`;
+  s+=`<text x="${cx-r}" y="${cy+22}" text-anchor="middle" style="font-size:11px;fill:var(--muted)">S/ 0</text>`;
+  s+=`<text x="${cx+r}" y="${cy+22}" text-anchor="middle" style="font-size:11px;font-weight:700;fill:var(--navy)">BEP S/ 16.76M</text>`;
+  s+=`<text x="${cx}" y="${cy+20}" text-anchor="middle" style="font-size:12px;fill:var(--ink)">Ventas Año 1: <tspan style="font-weight:800;fill:var(--green)">S/ 17.0M</tspan></text>`;
+  s+='</svg>';
+  document.getElementById('c_gauge').innerHTML=s;
+}
+
+/* scenarios multiline */
+function chartScen(){
+  const W=820,H=340,pl=44,pr=22,pt=18,pb=34,pw=W-pl-pr,ph=H-pt-pb;
+  const mx=70,mn=0, slot=pw/5;
+  const sy=v=>pt+(mx-v)/(mx-mn)*ph;
+  let s=svg(W,H);
+  for(let g=0;g<=mx;g+=10){const y=sy(g);
+    s+=`<line class="grid-l" x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}"/>`;
+    s+=`<text class="lbl-y" x="${pl-6}" y="${y+3}" text-anchor="end">${g}</text>`;}
+  const series=[['Conservador',CONSERV,'#dc2626'],['Base',BASE,'#2563eb'],['Aspiracional',ASPIR,'#15a34a']];
+  series.forEach(sr=>{
+    const nm=sr[0],arr=sr[1],col=sr[2];
+    let path='';arr.forEach((v,i)=>{const cx=pl+slot*(i+0.5),cy=sy(v);path+=(i?'L':'M')+cx+' '+cy+' ';});
+    s+=`<path d="${path}" fill="none" stroke="${col}" stroke-width="2.6"/>`;
+    arr.forEach((v,i)=>{const cx=pl+slot*(i+0.5),cy=sy(v);
+      const tip=`<b>${nm} · ${ANIOS[i]}</b><br>Ingresos: <b>${mill(v)}</b>`;
+      s+=`<circle cx="${cx}" cy="${cy}" r="3.6" fill="#fff" stroke="${col}" stroke-width="2" ${dt(tip)}/>`;});
+    const lv=arr[4],ly=sy(lv);
+    s+=`<text x="${pl+slot*4.5+5}" y="${ly+3}" style="font-size:10.5px;font-weight:800;fill:${col};font-variant-numeric:tabular-nums">${lv}</text>`;
+  });
+  ANIOS.forEach((yr,i)=>{const cx=pl+slot*(i+0.5);s+=`<text class="lbl-x" x="${cx}" y="${H-14}" text-anchor="middle" style="font-weight:600">${yr}</text>`;});
+  s+='</svg>';
+  document.getElementById('c_scen').innerHTML=s;
+}
+
+/* penetration trend */
+function chartPen(){
+  const W=440,H=230,pl=40,pr=16,pt=18,pb=30,pw=W-pl-pr,ph=H-pt-pb;
+  const mx=1.4,mn=0,slot=pw/5;
+  const sy=v=>pt+(mx-v)/(mx-mn)*ph;
+  let s=svg(W,H);
+  for(let g=0;g<=mx+0.001;g+=0.2){const y=sy(g);
+    s+=`<line class="grid-l" x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}"/>`;
+    s+=`<text class="lbl-y" x="${pl-6}" y="${y+3}" text-anchor="end">${g.toFixed(1)}%</text>`;}
+  let path='';PEN.forEach((v,i)=>{const cx=pl+slot*(i+0.5),cy=sy(v);path+=(i?'L':'M')+cx+' '+cy+' ';});
+  s+=`<path d="${path} L${pl+slot*4.5} ${sy(0)} L${pl+slot*0.5} ${sy(0)} Z" fill="var(--blue)" opacity="0.10"/>`;
+  s+=`<path d="${path}" fill="none" stroke="var(--blue)" stroke-width="2.6"/>`;
+  PEN.forEach((v,i)=>{const cx=pl+slot*(i+0.5),cy=sy(v);
+    const tip=`<b>${ANIOS[i]}</b><br>Penetración base: ${v.toFixed(2)}%`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="3.6" fill="#fff" stroke="var(--blue)" stroke-width="2" ${dt(tip)}/>`;
+    s+=`<text x="${cx}" y="${cy-9}" text-anchor="middle" style="font-size:10px;font-weight:800;fill:var(--blue);font-variant-numeric:tabular-nums">${v.toFixed(1)}%</text>`;
+    s+=`<text class="lbl-x" x="${cx}" y="${H-9}" text-anchor="middle">${ANIOS[i]}</text>`;});
+  s+='</svg>';
+  document.getElementById('c_pen').innerHTML=s;
+}
+
+/* tables */
+function buildTables(){
+  document.getElementById('tb_format').innerHTML=FMT.map(f=>
+    `<tr><td><span class="dot" style="background:${f[7]};margin-right:6px"></span>${f[0]}</td><td>${f[1].toFixed(2)}</td><td>${f[2].toFixed(2)}</td><td>${f[3].toFixed(2)}</td><td><b>${f[4]}%</b></td><td>${f[5]}%</td><td style="text-align:left;color:var(--muted)">${f[6]}</td></tr>`
+  ).join('')+`<tr class="total"><td>Ponderado (margen bruto)</td><td>—</td><td>—</td><td>—</td><td>38.26%</td><td>100%</td><td style="text-align:left">Mix 30/50/15/5</td></tr>`;
+
+  document.getElementById('tb_bep').innerHTML=BEP.map(b=>
+    `<tr><td><span class="dot" style="background:${b[6]};margin-right:6px"></span>${b[0]}</td><td>${b[1].toFixed(2)}</td><td>${pesos(b[2])}</td><td>${b[3]}%</td><td>${b[4].toLocaleString('es-PE')}</td><td>${pesos(b[5])}</td></tr>`
+  ).join('')+`<tr class="total"><td>Total</td><td>—</td><td>${pesos(5991000)}</td><td>100%</td><td>${(577035+508178+683227+128301).toLocaleString('es-PE')}</td><td>${pesos(BEP_TOTAL_VAL)}</td></tr>`;
+
+  const scen=[['Conservador',CONSERV,17.6],['Base',BASE,107.5],['Aspiracional',ASPIR,157.2]];
+  document.getElementById('tb_scen').innerHTML=scen.map(r=>{
+    const cells=r[1].map(v=>`<td>${v.toFixed(1)}</td>`).join('');
+    return `<tr${r[0]==='Base'?' class="total"':''}><td>${r[0]}</td>${cells}<td><b>${r[2]}</b></td></tr>`;
+  }).join('');
+}
+
+function renderAll(){
+  chartUO();chartVentas();chartWaterfall();
+  donut('c_gc','lg_gc',GC,mill);
+  donut('c_cons',null,CONS,miles);
+  hbars('c_mcformat',[
+    {name:'Sachet de 3',v:52.29,lab:'52.3%',col:'#d99a1c',tip:"<b>Sachet de 3</b><br>MC 52.3% · vehículo de trial"},
+    {name:'Tubo de 10',v:43.78,lab:'43.8%',col:'#2563eb',tip:"<b>Tubo de 10</b><br>MC 43.8% · generador de caja"},
+    {name:'Caja de 30',v:32.94,lab:'32.9%',col:'#0d9488',tip:"<b>Caja de 30</b><br>MC 32.9% · recompra"},
+    {name:'Suscripción D2C',v:16.29,lab:'16.3%',col:'#7c3aed',tip:"<b>Suscripción</b><br>MC 16.3% · valor por LTV, no por margen"}
+  ],{max:60,ref:MARGEN_BRUTO,refLab:'Bruto 38.3%'});
+  donut('c_mix','lg_mix',[['Tubo de 10',30,'#2563eb'],['Caja de 30',50,'#0d9488'],['Sachet de 3',15,'#d99a1c'],['Suscripción D2C',5,'#7c3aed']],v=>v+'%');
+  hbars('c_channel',CHAN.map(c=>({name:c[0],v:c[1],lab:c[1]+'%',col:c[2],tip:`<b>${c[0]}</b><br>MC tubo: ${c[1]}%`})),{max:50,pl:160});
+  chartGauge();
+  hbars('c_bepbars',BEP.map(b=>({name:b[0],v:b[5]/1e6,lab:mill(b[5]/1e6),col:b[6],tip:`<b>${b[0]}</b><br>PE valor: ${pesos(b[5])}<br>PE unidades: ${b[4].toLocaleString('es-PE')}`})),{max:10,pl:150});
+  chartScen();chartPen();buildTables();
+}
+
+document.getElementById('tabbar').addEventListener('click',e=>{
+  const b=e.target.closest('.tab');if(!b)return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('active');
+});
+
+renderAll();
+</script>
+</body>
+</html>
